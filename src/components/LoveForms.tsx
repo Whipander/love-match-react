@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion } from 'motion/react';
 
 export default function LoveForms() {
   const [firstName, setFirstName] = useState('');
@@ -22,17 +23,43 @@ export default function LoveForms() {
     }
   };
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col bg-white p-8 rounded-2xl shadow-2xl shadow-pink-200 w-md">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col bg-white p-8 rounded-2xl shadow-2xl shadow-pink-200 max-w-9/12 w-md"
+    >
       <div className="flex flex-col items-center justify-center gap-2 mb-5">
-        <img src="/heart.png" alt="Heart image" width={80} />
+        <motion.img
+          animate={{ scale: [1, 1.1, 1] }}
+          transition={{ type: 'tween', duration: 1, repeat: Infinity, ease: ['backIn', 'easeOut'] }}
+          src="/heart.png"
+          alt="Heart image"
+          width={60}
+        />
         <div className="flex flex-col items-center">
           <h2 className="text-3xl font-fancy">Love Match</h2>
-          <p className="text-1xl text-gray-500">Découvrez votre compatibilité</p>
+          <p className="text-1xl text-gray-500 text-center">Découvrez votre compatibilité</p>
         </div>
       </div>
       {loading ? (
         <div className="flex flex-col justify-center items-center gap-5">
-          <p className="text-pink-400">Calcul en cours...</p>
+          <p className="text-pink-400">Calcul en cours</p>
+          <div className="flex gap-2">
+            <motion.div
+              animate={{ y: [0, -5, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="bg-pink-300 size-2 rounded-full "
+            ></motion.div>{' '}
+            <motion.div
+              animate={{ y: [0, -5, 0] }}
+              transition={{ delay: 0.5, duration: 2, repeat: Infinity }}
+              className="bg-pink-300 size-2 rounded-full "
+            ></motion.div>{' '}
+            <motion.div
+              animate={{ y: [0, -5, 0] }}
+              transition={{ delay: 1, duration: 2, repeat: Infinity }}
+              className="bg-pink-300 size-2 rounded-full "
+            ></motion.div>
+          </div>
         </div>
       ) : showResult ? (
         <div className="flex flex-col justify-center items-center gap-4">
@@ -43,14 +70,14 @@ export default function LoveForms() {
           </div>
           <h2 className="font-bold text-7xl">{result}%</h2>
           <button
-            className={`${primaryGradient} text-white rounded-md px-2 py-4 w-[350px] cursor-pointer hover:scale-105 active:scale-95 transition-all`}
+            className={`${primaryGradient} text-white rounded-md px-2 py-4 w-full cursor-pointer hover:scale-105 active:scale-95 transition-all max-w-[350px]`}
             onClick={() => {
               setFirstName('');
               setSecondName('');
               setShowResult(false);
             }}
           >
-            Recommencez un test
+            Recommencez un test <span className="animate-pulse">&#8594;</span>
           </button>
         </div>
       ) : (
@@ -61,7 +88,8 @@ export default function LoveForms() {
               name="firstName"
               id="firstName"
               placeholder="Premier prénom"
-              className="bg-gray-100 p-4 rounded outline-pink-200 border border-gray-200"
+              className="bg-gray-100 p-4 rounded outline-pink-200 border border-gray-200 w-full"
+              autoComplete="off"
               onChange={(e) => {
                 setFirstName(e.target.value);
               }}
@@ -72,7 +100,8 @@ export default function LoveForms() {
               name="secondName"
               id="secondName"
               placeholder="Deuxième prénom"
-              className="bg-gray-100 p-4 rounded outline-pink-200 border border-gray-200"
+              className="bg-gray-100 p-4 rounded outline-pink-200 border border-gray-200 w-full"
+              autoComplete="off"
               onChange={(e) => {
                 setSecondName(e.target.value);
               }}
@@ -80,13 +109,16 @@ export default function LoveForms() {
           </div>
           {firstName && secondName ? (
             <button
-              className={`bg-pink-500 text-white rounded-md px-2 py-4 w-[350px] cursor-pointer hover:scale-105 active:scale-95 transition-all`}
+              className={`bg-pink-500 text-white rounded-md px-2 py-4 w-full max-w-[350px] cursor-pointer hover:scale-105 active:scale-95 transition-all`}
               type="submit"
             >
-              Tester la compatibilité <span className='animate-pulse'>&#8594;</span>
+              Tester la compatibilité <span className="animate-pulse">&#8594;</span>
             </button>
           ) : (
-            <button className="bg-gray-300 text-white rounded-md px-2 py-4 w-[350px] transition-colors " type="submit">
+            <button
+              className="bg-gray-300 text-white rounded-md px-2 py-4 w-full max-w-[350px] transition-colors cursor-not-allowed "
+              type="submit"
+            >
               Tester la compatibilité <span>&#8594;</span>
             </button>
           )}
